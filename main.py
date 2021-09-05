@@ -13,8 +13,7 @@ import model as mdUser
 
 app = FastAPI(title="Creating Endpoints Using FastAPI for Wealth.ng Products")
 
-app = FastAPI(title="Creating Endpoints Using FastAPI for Wealth.ng Products")
-app.add_middleware(
+app.add_middleware(             #Middleware can connect to any server although not entirely optimal feel freee to customize
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
@@ -23,7 +22,7 @@ app.add_middleware(
 )
 app.add_middleware(GZipMiddleware)
 
-@app.on_event("startup")
+@app.on_event("startup")                                            #HERE we start and disconnect the databasse with aync functions
 async def startup():
     await database.connect()
 
@@ -31,7 +30,7 @@ async def startup():
 async def shutdown():
     await database.disconnect()
 
-@app.post("/wealthng/", response_model=mdUser.Wealthng, status_code = status.HTTP_201_CREATED)
+@app.post("/wealthng/", response_model=mdUser.Wealthng, status_code = status.HTTP_201_CREATED)   #HERE HWE STATE OUR ENDPOINTS AND PERFORM CRUD OPERATIONS
 async def create_product(wealth: mdUser.WealthngIn):
     """
         Here we try to create new wealthng product
@@ -55,7 +54,7 @@ async def update_product(product_id: int, payload: mdUser.WealthngIn):
 @app.get("/wealthng/", response_model=List[mdUser.Wealthng], status_code = status.HTTP_200_OK)
 async def read_products_list(skip: int = 0, take: int = 20):
     """
-        Here we try to view the full list of products offered by wealth.ng
+        Here we try to view the full list of products offered by
     """
     query = wealthng.select().offset(skip).limit(take)
     return await database.fetch_all(query)
@@ -76,7 +75,5 @@ async def delete_note(product_id: int):
     query = wealthng.delete().where(wealthng.c.product_id == product_id)
     await database.execute(query)
     return {"message": "Servive with product_id: {} deleted successfully!".format(product_id)}
-
-
 
 print('This is the sprint')
