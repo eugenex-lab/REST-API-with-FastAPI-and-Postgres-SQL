@@ -25,9 +25,9 @@ wealthng = sqlalchemy.Table(
     metadata,
     sqlalchemy.Column("product_id", sqlalchemy.Integer, primary_key=True, autoincrement=True,index=True),
     sqlalchemy.Column("product_name", sqlalchemy.String,unique=True,index=True),
-    sqlalchemy.Column("minimum_investment", sqlalchemy.Integer, index=True),
+    sqlalchemy.Column("minimum_investment", sqlalchemy.String, index=True),
     sqlalchemy.Column("product_tenor", sqlalchemy.String,index=True),
-    sqlalchemy.Column("investment_return", sqlalchemy.Integer, index=True),
+    sqlalchemy.Column("investment_return", sqlalchemy.String, index=True),
     sqlalchemy.Column("activate_rollover", sqlalchemy.Boolean,index=True),
 )
 
